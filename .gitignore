@@ -128,3 +128,5 @@ $RECYCLE.BIN/
 *.iml
 out
 gen
+node_modules
+is-ilani-frontend/node_modules
