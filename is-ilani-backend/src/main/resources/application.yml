@@ -1,0 +1,8 @@
+spring:
+    datasource:
+        password: 123123
+        platform: postgres
+        url: jdbc:postgresql://localhost:5432/internship
+        username: postgres
+    jpa:
+        database: POSTGRESQL
