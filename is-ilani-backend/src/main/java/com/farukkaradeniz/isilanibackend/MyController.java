@@ -21,4 +21,10 @@ public class MyController {
     public String home() {
         return "home";
     }
+
+
+    @GetMapping(value = "/giris")
+    public String login() {
+        return "giris page";
+    }
 }
