@@ -2,6 +2,7 @@ package com.farukkaradeniz.isilanibackend;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,8 +24,13 @@ public class MyController {
     }
 
 
-    @GetMapping(value = "/giris")
+    @GetMapping(value = "/login")
     public String login() {
         return "giris page";
+    }
+
+    @PostMapping(value = "/login")
+    public String postLogin() {
+        return "post login";
     }
 }
