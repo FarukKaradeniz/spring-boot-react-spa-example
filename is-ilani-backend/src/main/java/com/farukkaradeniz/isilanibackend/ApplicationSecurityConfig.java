@@ -30,7 +30,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .cors()
                 .and()
-                .httpBasic();
+                .httpBasic()
+                .and()
+                .oauth2Login()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/logout-success") //frontende redirect yapsın o sayfada da tokenlar clear olsun
+                .deleteCookies("JSESSIONID")
+                .permitAll();
     }
 
     @Override

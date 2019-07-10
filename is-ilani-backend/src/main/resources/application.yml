@@ -20,7 +20,12 @@ spring:
         oauth2:
             client:
                 registration:
-                    client-id: 86ra1qk3uj8rgz
-                    client-secret: ohNWirGGQmaFHoJh
-                    user-authorization-uri: https://www.linkedin.com/oauth/v2/authorization
-                    access-token-uri: https://www.linkedin.com/oauth/v2/accessToken
+#                    linkedin:
+#                        provider: linkedin
+#                        client-id: 86ra1qk3uj8rgz
+#                        client-secret: ohNWirGGQmaFHoJh
+#                        user-authorization-uri: https://www.linkedin.com/oauth/v2/authorization
+#                        access-token-uri: https://www.linkedin.com/oauth/v2/accessToken
+                    github:
+                        client-id: Iv1.b9e228dfdaa14a30
+                        client-secret: 1eb90f4133a48d6e428bfb857573ded4ae5f0443

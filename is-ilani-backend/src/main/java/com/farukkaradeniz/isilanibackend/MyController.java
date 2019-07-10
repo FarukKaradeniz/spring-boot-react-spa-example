@@ -5,8 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.ldap.userdetails.LdapUserDetailsImpl;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,8 +66,33 @@ public class MyController {
         return "usr page";
     }
 
+    @GetMapping(value = "/securedPage")
+    public String securedPage(Model model,
+                              @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
+                              @AuthenticationPrincipal OAuth2User oauth2User) {
+        model.addAttribute("userName", oauth2User.getName());
+        model.addAttribute("clientName", authorizedClient.getClientRegistration().getClientName());
+        model.addAttribute("userAttributes", oauth2User.getAttributes());
+        return "securedPage";
+    }
+
     @PostMapping(value = "/login")
     public String postLogin() {
         return "post login";
+    }
+
+    @PostMapping(value = "/logout")
+    public String postLogout() {
+        return "post logout";
+    }
+
+    @GetMapping(value = "/logout")
+    public String getLogout() {
+        return "get logout";
+    }
+
+    @GetMapping(value = "/logout-success")
+    public String getLogoutSuccess() {
+        return "get logout success";
     }
 }
