@@ -11,6 +11,7 @@ import JobDetail from "./JobDetail";
 import BasvuranListe from "./BasvuranListe";
 import Basvurularim from "./Basvurularim";
 import PrivateRoute from "./PrivateRoute";
+import CreateJobPost from "./CreateJobPost";
 
 
 class App extends React.Component {
@@ -52,6 +53,7 @@ class App extends React.Component {
             <Route path="/jobdetail" component={JobDetail} />
             <Route path="/basvuranlar" component={BasvuranListe} />
             <Route path="/basvurularim" component={Basvurularim} />
+            <Route path="/createjobpost" component={CreateJobPost} />
           </Container>
         </div>
       </BrowserRouter>

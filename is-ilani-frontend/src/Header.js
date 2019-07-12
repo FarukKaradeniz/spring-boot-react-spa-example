@@ -19,6 +19,11 @@ export default class Header extends React.Component {
             </Link>
           </Nav.Item>
           <Nav.Item>
+            <Link className="nav-link" to="/createjobpost">
+              Oluştur
+            </Link>
+          </Nav.Item>
+          <Nav.Item>
             <Link className={classNames("nav-link", {"hidden-class": this.props.authenticated})} to="/login">
               Login
             </Link>
