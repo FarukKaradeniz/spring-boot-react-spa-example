@@ -1,24 +1,32 @@
-import React from 'react';
-import './App.css';
-import {BrowserRouter as Router, Link, Route} from "react-router-dom";
+import React from "react";
 
-
-import Home from './Home';
-import Protected from './Protected';
-import Login from './Login';
-import PrivateRoute from './PrivateRoute';
-import Profil from './Profil';
+import "./App.css";
+import Header from "./Header";
+import {Container} from "react-bootstrap";
+import HomePage from "./HomePage";
+import {BrowserRouter, Route} from "react-router-dom";
+import LoginPage from "./LoginPage";
+import Profil from "./Profil";
+import JobDetail from "./JobDetail";
+import BasvuranListe from "./BasvuranListe";
+import Basvurularim from "./Basvurularim";
+import PrivateRoute from "./PrivateRoute";
 
 
 class App extends React.Component {
 
   state = {
+    token: null,
     authenticated: false,
   };
 
-  setAuthenticated = () => {
+  setAuthenticate = (string, tkn) => {
+    console.log("String got from is " + string, "and token is:" + tkn);
     if (this.state.authenticated===false){
-      this.setState({authenticated: true})
+      this.setState({
+        authenticated: true,
+        token: tkn,
+      })
     }
   };
 
@@ -26,25 +34,27 @@ class App extends React.Component {
 
 
     return (
-      <Router>
+      <BrowserRouter>
         <div className="App">
-          <header className="App-header">
-            <li>
-              <Link to={"/"}>Home</Link>
-              <Link to={"/protected"}>Protected</Link>
-              <Link to={"/profil"}>Profil</Link>
-            </li>
-
-          </header>
-
-          <Route path={"/"} exact component={Home} />
-          <Route path="/login"
-                 render={() => <Login authenticate={this.setAuthenticated} authenticated={this.state.authenticated}/>} />
-          <PrivateRoute path={"/protected"} authenticated={this.state.authenticated} component={Protected}/>
-          <PrivateRoute path={"/profil"} authenticated={this.state.authenticated} component={Profil}/>
-
+          <Header
+            authenticated={this.state.authenticated}
+          />
+          <Container fluid>
+            <Route path="/" exact component={HomePage} />
+            {/*<Route path="/login" component={LoginPage} />*/}
+            <Route path="/login"
+                   render={() => <LoginPage
+                     token={this.state.token}
+                     setAuthenticate={this.setAuthenticate}
+                     authenticated={this.state.authenticated}/>} />
+            {/*<Route path="/profil" component={Profil} />*/}
+            <PrivateRoute path="/profil" authenticated={this.state.authenticated} component={Profil} />
+            <Route path="/jobdetail" component={JobDetail} />
+            <Route path="/basvuranlar" component={BasvuranListe} />
+            <Route path="/basvurularim" component={Basvurularim} />
+          </Container>
         </div>
-      </Router>
+      </BrowserRouter>
     );
   }
 }
