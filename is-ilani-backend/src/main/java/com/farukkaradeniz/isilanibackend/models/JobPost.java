@@ -4,8 +4,10 @@ package com.farukkaradeniz.isilanibackend.models;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Data
@@ -13,8 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class JobPost {
     @Id
-    @GeneratedValue
-    private Long jobPostId;
+    private String jobPostId;
     @Column(name = "title")
     private String title;
     @Column(name = "description")
@@ -24,14 +25,14 @@ public class JobPost {
     @Column(name = "is_available")
     private Boolean isAvailable;
     @Column(name = "creation_date")
-    private Date creationDate;
+    private Long creationDate;
     @Column(name = "deadline")
-    private Date deadline;
+    private Long deadline;
 
     @OneToMany(mappedBy = "jobPost")
     private List<JobApplication> applications;
 
-    public JobPost(String title, String description, String requirements, Boolean isAvailable, Date creationDate, Date deadline, List<JobApplication> jobApplications) {
+    public JobPost(String title, String description, String requirements, Boolean isAvailable, Long creationDate, Long deadline, List<JobApplication> jobApplications) {
         this.title = title;
         this.description = description;
         this.requirements = requirements;

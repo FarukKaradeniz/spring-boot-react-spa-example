@@ -4,16 +4,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity(name = "candidate")
 @Data
 @NoArgsConstructor
 public class Candidate {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long userId;
+    private String userId;
     @Column(name ="fullname")
     private String fullname;
     @Column(name = "email")
