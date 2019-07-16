@@ -1,13 +1,25 @@
 spring:
-#    datasource:
-#        password: 123123
-#        platform: postgres
-#        url: jdbc:postgresql://localhost:5432/internship
-#        username: postgres
-#    jpa:
-#        database: POSTGRESQL
-#    main:
-#        allow-bean-definition-overriding: true
+    datasource:
+        password: 123123
+        platform: postgres
+        url: jdbc:postgresql://localhost:5432/internship
+        username: postgres
+    jpa:
+        database: POSTGRESQL
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+                jdbc:
+                    lob:
+                        non_contextual_creation: true
+        generate-ddl: true
+        hibernate:
+            ddl-auto: update
+    main:
+        allow-bean-definition-overriding: true
+    data:
+        rest:
+            base-path: /api
 
     ldap:
         embedded:
@@ -20,22 +32,22 @@ spring:
         oauth2:
             client:
                 registration:
-                    linkedin:
-                        provider: linkedin
-                        client-id: 86ra1qk3uj8rgz
-                        client-secret: ohNWirGGQmaFHoJh
-                        authorization-grant-type: authorization_code
-                        scope: r_liteprofile, r_emailaddress
-                        client-name: Linkedin
-                        redirect-uri-template: "http://localhost:3000"
-#                        user-authorization-uri: https://www.linkedin.com/oauth/v2/authorization
-#                        access-token-uri: https://www.linkedin.com/oauth/v2/accessToken
-
-                provider:
-                  linkedin:
-                    authorization-uri: https://www.linkedin.com/oauth/v2/authorization
-                    token-uri: https://www.linkedin.com/oauth/v2/accessToken
-                    user-info-uri: https://api.linkedin.com/v2/me
-#                    github:
-#                        client-id: Iv1.b9e228dfdaa14a30
-#                        client-secret: 1eb90f4133a48d6e428bfb857573ded4ae5f0443
+#                    linkedin:
+#                        provider: linkedin
+#                        client-id: 86ra1qk3uj8rgz
+#                        client-secret: ohNWirGGQmaFHoJh
+#                        authorization-grant-type: authorization_code
+#                        scope: r_liteprofile, r_emailaddress
+#                        client-name: Linkedin
+#                        redirect-uri-template: "http://localhost:3000"
+##                        user-authorization-uri: https://www.linkedin.com/oauth/v2/authorization
+##                        access-token-uri: https://www.linkedin.com/oauth/v2/accessToken
+#
+#                provider:
+#                  linkedin:
+#                    authorization-uri: https://www.linkedin.com/oauth/v2/authorization
+#                    token-uri: https://www.linkedin.com/oauth/v2/accessToken
+#                    user-info-uri: https://api.linkedin.com/v2/me
+                    github:
+                        client-id: Iv1.b9e228dfdaa14a30
+                        client-secret: 1eb90f4133a48d6e428bfb857573ded4ae5f0443
