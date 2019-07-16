@@ -28,6 +28,7 @@ public class Candidate {
     private Boolean inBlacklist;
 
     @OneToMany(mappedBy = "candidate")
+//    @JsonIgnore
     @Nullable
     private List<JobApplication> applications;
 

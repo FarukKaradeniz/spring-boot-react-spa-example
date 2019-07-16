@@ -30,6 +30,7 @@ public class JobPost {
     private Long deadline;
 
     @OneToMany(mappedBy = "jobPost")
+//    @JsonIgnore
     private List<JobApplication> applications;
 
     public JobPost(String title, String description, String requirements, Boolean isAvailable, Long creationDate, Long deadline, List<JobApplication> jobApplications) {
