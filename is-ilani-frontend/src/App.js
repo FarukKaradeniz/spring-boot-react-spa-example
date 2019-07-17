@@ -50,8 +50,8 @@ class App extends React.Component {
                      authenticated={this.state.authenticated}/>} />
             {/*<Route path="/profil" component={Profil} />*/}
             <PrivateRoute path="/profil" authenticated={this.state.authenticated} component={Profil} />
-            <Route path="/jobdetail" component={JobDetail} />
-            <Route path="/basvuranlar" component={BasvuranListe} />
+            <Route exact path="/jobdetail/:postId" component={JobDetail} />
+            <Route exact path="/applicants/:postId" component={BasvuranListe} />
             <Route path="/basvurularim" component={Basvurularim} />
             <Route path="/createjobpost" component={CreateJobPost} />
           </Container>

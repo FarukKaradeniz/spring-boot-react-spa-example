@@ -58,32 +58,9 @@ export default class CreateJobPost extends React.Component {
     return this.state.title==="" || this.state.description==="" || this.state.requirements==="";
   };
 
-
-  makeCreateJobPostRequest = async () => {
-    console.log(baseUrl, pathUrl);
-    let jobPostRequest = {
-      baseUrl: `${baseUrl}${pathUrl}`,
-      method: 'post',
-      data: {
-        title: this.state.title,
-        description: this.state.description,
-        requirements: this.state.requirements,
-        isAvailable: this.state.isAvailable,
-        deadline: this.state.deadline
-      },
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      }
-    };
-    return Axios(jobPostRequest);
-  };
-
-
-
   render() {
     if (this.state.created===true && this.state.createdJobPostId!=="") {
-      return <Redirect to="/" /> // /jobdetail?id=XXXXX gibi bişeye gidecek
+      return <Redirect to={`/jobdetail/${this.state.createdJobPostId}`} /> // /jobdetail?id=XXXXX gibi bişeye gidecek
     }
 
     return (
