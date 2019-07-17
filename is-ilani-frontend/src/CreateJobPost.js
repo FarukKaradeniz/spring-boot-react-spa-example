@@ -5,29 +5,87 @@ import Button from "react-bootstrap/Button";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+import Axios from "axios";
+import {Redirect} from "react-router-dom";
+
+const baseUrl = "http://localhost:8080";
+const pathUrl = "/api/jobpost";
+
 export default class CreateJobPost extends React.Component {
   state = {
-    baslik: "",
-    is_tanimi: "",
-    beklentiler: "",
-    aktiflik: false,
-    sonBasvuruZamani: new Date().setDate(new Date().getDate() + 1)
+    title: "",
+    description: "",
+    requirements: "",
+    isAvailable: true,
+    deadline: new Date().setDate(new Date().getDate() + 1),
+    created: false,
+    createdJobPostId: "",
   };
 
-  onFormSubmit = e => {
+  onFormSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      this.state.baslik,
-      this.state.is_tanimi,
-      this.state.beklentiler,
-      this.state.aktiflik,
-      this.state.sonBasvuruZamani
-    );
 
-    console.log(new Date(1563021246817).getDate());
+    let ifEmpty = this.checkAllFieldsNotEmpty();
+    
+    if (ifEmpty === false) {
+      console.log(baseUrl, pathUrl);
+      let jobPostRequest = {
+        url: `${baseUrl}${pathUrl}`,
+        method: 'post',
+        data: {
+          title: this.state.title,
+          description: this.state.description,
+          requirements: this.state.requirements,
+          isAvailable: this.state.isAvailable,
+          deadline: this.state.deadline
+        },
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        }
+      };
+      Axios(jobPostRequest).then(
+        response => {
+          console.log(response);
+          this.setState({created: true, createdJobPostId: response.data.jobPostId});
+        }
+      );
+    } 
+    
   };
+
+  checkAllFieldsNotEmpty = () => {
+    return this.state.title==="" || this.state.description==="" || this.state.requirements==="";
+  };
+
+
+  makeCreateJobPostRequest = async () => {
+    console.log(baseUrl, pathUrl);
+    let jobPostRequest = {
+      baseUrl: `${baseUrl}${pathUrl}`,
+      method: 'post',
+      data: {
+        title: this.state.title,
+        description: this.state.description,
+        requirements: this.state.requirements,
+        isAvailable: this.state.isAvailable,
+        deadline: this.state.deadline
+      },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      }
+    };
+    return Axios(jobPostRequest);
+  };
+
+
 
   render() {
+    if (this.state.created===true && this.state.createdJobPostId!=="") {
+      return <Redirect to="/" /> // /jobdetail?id=XXXXX gibi bişeye gidecek
+    }
+
     return (
       <div
         className="text-center"
@@ -39,53 +97,54 @@ export default class CreateJobPost extends React.Component {
         }}
       >
         <div style={{ width: "50%" }}>
-          <h2 style={{ fontWeight: "bold" }}>Cretezxds</h2>
+          <h2 style={{ fontWeight: "bold" }}>Create Job Post</h2>
           <br />
           <form onSubmit={this.onFormSubmit}>
-            <Form.Group controlId="baslik">
+            <Form.Group controlId="title">
               <Form.Control
-                value={this.state.baslik}
-                onChange={e => this.setState({ baslik: e.target.value })}
+                value={this.state.title}
+                onChange={e => this.setState({ title: e.target.value })}
                 type="text"
-                placeholder="Başlığı girin"
+                placeholder="Enter Title"
               />
             </Form.Group>
 
-            <Form.Group controlId="is_tanimi">
+            <Form.Group controlId="description">
               <Form.Control
-                value={this.state.is_tanimi}
-                onChange={e => this.setState({ is_tanimi: e.target.value })}
-                placeholder="İş tanımı"
+                value={this.state.description}
+                onChange={e => this.setState({ description: e.target.value })}
+                placeholder="Description"
               />
             </Form.Group>
-            <Form.Group controlId="beklentiler">
+            <Form.Group controlId="requirements">
               <Form.Control
-                value={this.state.beklentiler}
-                onChange={e => this.setState({ beklentiler: e.target.value })}
-                placeholder="Beklentiler"
+                value={this.state.requirements}
+                onChange={e => this.setState({ requirements: e.target.value })}
+                placeholder="Requirements"
                 as="textarea"
                 rows="6"
               />
             </Form.Group>
-            <Form.Group controlId="aktiflik">
+            <Form.Group controlId="isAvailable">
               <Form.Check
-                value={this.state.aktiflik}
-                onClick={e => this.setState({ aktiflik: e.target.checked })}
+                value={this.state.isAvailable}
+                onClick={e => this.setState({ isAvailable: e.target.checked })}
                 type="checkbox"
-                label="Aktiflik Durumu"
+                label="Availability"
+                defaultChecked
               />
             </Form.Group>
-            <Form.Group controlId="sonBasvuruZamani">
+            <Form.Group controlId="deadline">
               <DatePicker
-                selected={this.state.sonBasvuruZamani}
-                onChange={e => this.setState({ sonBasvuruZamani: e })}
+                selected={this.state.deadline}
+                onChange={e => this.setState({ deadline: Date.parse(e) })}
                 dateFormat="dd/MM/yyyy"
                 minDate={new Date().setDate(new Date().getDate() + 1)}
               />
             </Form.Group>
 
             <Button variant="primary" type="submit">
-              Oluştur
+              Create
             </Button>
           </form>
         </div>
