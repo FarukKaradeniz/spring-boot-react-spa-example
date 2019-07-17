@@ -1,16 +1,19 @@
 package com.farukkaradeniz.isilanibackend.services;
 
+import com.farukkaradeniz.isilanibackend.models.Candidate;
+import com.farukkaradeniz.isilanibackend.models.JobApplication;
 import com.farukkaradeniz.isilanibackend.models.JobPost;
+import com.farukkaradeniz.isilanibackend.models.combined.CandidateApplication;
+import com.farukkaradeniz.isilanibackend.models.combined.JobPostApplication;
+import com.farukkaradeniz.isilanibackend.repositories.CandidateRepository;
+import com.farukkaradeniz.isilanibackend.repositories.JobApplicationRepository;
 import com.farukkaradeniz.isilanibackend.repositories.JobPostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class JobPostService {
@@ -18,10 +21,14 @@ public class JobPostService {
     private Logger log = LoggerFactory.getLogger(JobPostService.class);
 
     private JobPostRepository jobPostRepository;
+    private JobApplicationRepository jobApplicationRepository;
+    private CandidateRepository candidateRepository;
 
     @Autowired
-    public JobPostService(JobPostRepository jobPostRepository) {
+    public JobPostService(JobPostRepository jobPostRepository, JobApplicationRepository jobApplicationRepository, CandidateRepository candidateRepository) {
         this.jobPostRepository = jobPostRepository;
+        this.jobApplicationRepository = jobApplicationRepository;
+        this.candidateRepository = candidateRepository;
     }
 
     public List<JobPost> findAll() {
@@ -62,4 +69,26 @@ public class JobPostService {
         return saved;
     }
 
+    public List<CandidateApplication> getJobPostsCandidateApplied(String candidate_id) {
+        List<CandidateApplication> resultList = new ArrayList<>();
+        List<JobApplication> allByCandidate_userId = jobApplicationRepository.findAllByCandidate_UserId(candidate_id);
+        List<JobPost> allByApplicationsByCandidate = new ArrayList<>();
+        allByCandidate_userId.forEach(jobApplication -> allByApplicationsByCandidate.add(jobPostRepository.findById(jobApplication.jobPostId()).get()));
+        allByApplicationsByCandidate.forEach(jobPost -> resultList.add(new CandidateApplication(jobPost.getJobPostId(), jobPost.getTitle(), jobApplicationRepository.findAllByCandidate_UserIdAndAndJobPost_JobPostId(candidate_id, jobPost.getJobPostId()).getStatus())));
+
+        return resultList;
+
+    }
+
+    public List<JobPostApplication> getJobPostApplicants(String job_post_id) {
+        List<JobPostApplication> resultList = new ArrayList<>();
+        List<JobApplication> allByJobPost_jobPostId = jobApplicationRepository.findAllByJobPost_JobPostId(job_post_id);
+
+        allByJobPost_jobPostId.forEach(jobApplication -> {
+            Candidate candidate = candidateRepository.findById(jobApplication.candidateId()).get();
+            resultList.add(new JobPostApplication(jobApplication.getApplicationId(),
+                    candidate.getFullname(), candidate.getUserId(), candidate.getEmail()));
+        });
+        return resultList;
+    }
 }

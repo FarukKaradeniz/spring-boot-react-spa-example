@@ -1,6 +1,8 @@
 package com.farukkaradeniz.isilanibackend.controllers;
 
 import com.farukkaradeniz.isilanibackend.models.JobPost;
+import com.farukkaradeniz.isilanibackend.models.combined.CandidateApplication;
+import com.farukkaradeniz.isilanibackend.models.combined.JobPostApplication;
 import com.farukkaradeniz.isilanibackend.services.JobPostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,5 +84,20 @@ public class JobPostController {
         return jobPostService.setAvailability(id, jobPost);
     }
 
+    // Adayın kendi sayfasına başvurduğu başvurularla ilgili küçük detayları göreceği sayfa
+    @GetMapping("/jobpost/candidate/{id}")
+    public List<CandidateApplication> jobPostsCandidadeApplied(
+        @PathVariable("id") String candidate_id
+    ){
+       return jobPostService.getJobPostsCandidateApplied(candidate_id);
+    }
+
+    // HR'ın bir iş ilanına yapılan başvurularla ilgili küçük detayları göreceği sayfa
+    @GetMapping("/jobpost/{id}/applications")
+    public List<JobPostApplication> jobPostApplicants(
+            @PathVariable("id") String job_post_id
+    ) {
+        return jobPostService.getJobPostApplicants(job_post_id);
+    }
 
 }
