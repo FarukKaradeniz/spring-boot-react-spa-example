@@ -1,8 +1,9 @@
 package com.farukkaradeniz.isilanibackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,8 +29,8 @@ public class Candidate {
     private Boolean inBlacklist;
 
     @OneToMany(mappedBy = "candidate")
-//    @JsonIgnore
-    @Nullable
+    @JsonIgnore
+    @ToString.Exclude
     private List<JobApplication> applications;
 
     public Candidate(String fullname, String email, String profileImg, String skills, Boolean inBlacklist, List<JobApplication> jobApplications) {
