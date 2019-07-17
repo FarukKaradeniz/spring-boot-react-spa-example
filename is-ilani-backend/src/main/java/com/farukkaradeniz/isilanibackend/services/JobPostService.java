@@ -74,7 +74,7 @@ public class JobPostService {
         List<JobApplication> allByCandidate_userId = jobApplicationRepository.findAllByCandidate_UserId(candidate_id);
         List<JobPost> allByApplicationsByCandidate = new ArrayList<>();
         allByCandidate_userId.forEach(jobApplication -> allByApplicationsByCandidate.add(jobPostRepository.findById(jobApplication.jobPostId()).get()));
-        allByApplicationsByCandidate.forEach(jobPost -> resultList.add(new CandidateApplication(jobPost.getJobPostId(), jobPost.getTitle(), jobApplicationRepository.findAllByCandidate_UserIdAndAndJobPost_JobPostId(candidate_id, jobPost.getJobPostId()).getStatus())));
+        allByApplicationsByCandidate.forEach(jobPost -> resultList.add(new CandidateApplication(jobPost.getJobPostId(), jobPost.getTitle(), jobApplicationRepository.findByCandidate_UserIdAndAndJobPost_JobPostId(candidate_id, jobPost.getJobPostId()).getStatus())));
 
         return resultList;
 
