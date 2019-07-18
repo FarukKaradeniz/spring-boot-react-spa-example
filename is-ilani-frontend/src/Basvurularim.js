@@ -15,7 +15,6 @@ export default class Basvurularim extends React.Component {
   };
   
   componentDidMount = () => {
-    console.log("basvurularim did mount");
     const candidate_id = "f9f60e84-14c3-457f-a8ba-5e57f4afcee1";
     this.setState({id: candidate_id});
     //TODO buraya id props olarak gelecek.
@@ -39,8 +38,8 @@ export default class Basvurularim extends React.Component {
   populateUIList = () => {
     return this.state.applications.map((data, index) => {
       return(
-        <Link to={`/jobdetail/${data.jobPostId}`}>
-          <div key={index}>
+        <Link to={`/jobdetail/${data.jobPostId}`}  key={index}>
+          <div>
             <Card
               bg={this.bgValue(data.status)}
               text={this.bgValue(data.status) !== "light" ? "white" : ""}
@@ -90,7 +89,7 @@ export default class Basvurularim extends React.Component {
           Başvurularım
         </h2>
         <ListGroup style={{ width: "60%", margin: "auto" }}>
-          {this.populateUIList().length === 0 ? "Henüz bir başvurunuz yok" : this.populateUIList()}
+          {this.populateUIList().length === 0 ? "You don't have any job applications" : this.populateUIList()}
         </ListGroup>
       </div>
     );
