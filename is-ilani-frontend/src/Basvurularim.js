@@ -2,43 +2,77 @@ import React from "react";
 
 import {ListGroup} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
+import {Link} from "react-router-dom";
+import Axios from "axios";
+
+const baseUrl = "http://localhost:8080";
+const pathUrl = "/api/jobpost/candidate/";
 
 export default class Basvurularim extends React.Component {
+  state = {
+    id: "",
+    applications: [],
+  };
+  
   componentDidMount = () => {
     console.log("basvurularim did mount");
+    const candidate_id = "f9f60e84-14c3-457f-a8ba-5e57f4afcee1";
+    this.setState({id: candidate_id});
+    //TODO buraya id props olarak gelecek.
+    this.getBasvurularim(candidate_id);
   };
 
-  met = () => {
-    let mylist = [
-      { name: "One", value: "success" },
-      { name: "Two", value: "light" },
-      { name: "Three", value: "light" },
-      { name: "Four", value: "danger" },
-      { name: "Five", value: "success" },
-      { name: "Six", value: "light" }
-    ];
 
-    let itemList = mylist.map((value, index) => {
-      return (
-        <div key={index}>
-          <Card
-            bg={value.value}
-            text={value.value !== "light" ? "white" : ""}
-            style={{ margin: "3px" }}
-          >
-            <Card.Header>Header</Card.Header>
-            <Card.Body>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </div>
+  bgValue = (status) => {
+    if (status === "KABUL") {
+      return "success";
+    }
+    else if (status === "RED") {
+      return "danger";
+    }
+    else {
+      return "light";
+    }
+
+  };
+
+  populateUIList = () => {
+    return this.state.applications.map((data, index) => {
+      return(
+        <Link to={`/jobdetail/${data.jobPostId}`}>
+          <div key={index}>
+            <Card
+              bg={this.bgValue(data.status)}
+              text={this.bgValue(data.status) !== "light" ? "white" : ""}
+              style={{ margin: "3px" }}
+            >
+              <Card.Header>{data.jobPostTitle+"\t( "+data.status+")"}</Card.Header>
+            </Card>
+          </div>
+        </Link>
       );
     });
+  };
 
-    return itemList;
+  getBasvurularim = (id) => {
+    let jobPostRequest = {
+      url: `${baseUrl}${pathUrl}${id}`,
+      method: 'get',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      }
+    };
+
+    Axios(jobPostRequest).then(
+      response => {
+        console.log(response);
+        this.setState(
+          {
+            applications: response.data
+          }
+        );
+      }
+    );
   };
 
   render() {
@@ -56,16 +90,7 @@ export default class Basvurularim extends React.Component {
           Başvurularım
         </h2>
         <ListGroup style={{ width: "60%", margin: "auto" }}>
-          <Card bg="success" text="white">
-            <Card.Header>Header</Card.Header>
-            <Card.Body>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </Card.Text>
-            </Card.Body>
-          </Card>
-          {this.met()}
+          {this.populateUIList().length === 0 ? "Henüz bir başvurunuz yok" : this.populateUIList()}
         </ListGroup>
       </div>
     );

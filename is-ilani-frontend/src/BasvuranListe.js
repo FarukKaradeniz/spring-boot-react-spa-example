@@ -51,6 +51,7 @@ export default class BasvuranListe extends React.Component {
       .map((data, index) => {
         return (
           <ListGroup.Item key={index}>
+            {/**H2 tag'i <Link> içerisine alınacak ve kişinin profiline gidecek. */}
             <h2 style={{float: "left"}}>{data.fullname}</h2>
             <div style={{float: "right", width: "30%"}}>
               <Button
