@@ -2,15 +2,18 @@ import React from "react";
 
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import Image from 'react-bootstrap/Image'
 import {Link} from "react-router-dom";
 import classNames from "classnames";
 
 export default class Header extends React.Component {
   render() {
     return (
-      <Navbar bg="dark" variant="dark" static="top">
+      <Navbar bg="light" variant="light" static="top" style={{justifyContent: 'space-between'}}>
         <Navbar.Brand>
-          <Link to="/">Home</Link>
+          <Link to="/">
+            <Image src={require("./images/brand-logo.png")} height={30}/>
+          </Link>
         </Navbar.Brand>
         <Nav className="justify-content-end" activeKey="/home">
           <Nav.Item>
