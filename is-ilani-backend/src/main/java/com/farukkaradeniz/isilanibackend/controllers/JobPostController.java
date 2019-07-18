@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,8 +60,14 @@ public class JobPostController {
             @RequestParam("isAvailable") boolean is_available
     ) {
 
-        List<JobPost> allAvailableJobPosts = jobPostService.getAllAvailableJobPosts();
-        List<JobPost> allNonAvailableJobPosts = jobPostService.getAllNonAvailableJobPosts();
+        List<JobPost> allAvailableJobPosts = jobPostService.getAllAvailableJobPosts().stream().map(jobPost -> {
+            jobPost.setApplications(Collections.emptyList());
+            return jobPost;
+        }).collect(Collectors.toList());
+        List<JobPost> allNonAvailableJobPosts = jobPostService.getAllNonAvailableJobPosts().stream().map(jobPost -> {
+            jobPost.setApplications(Collections.emptyList());
+            return jobPost;
+        }).collect(Collectors.toList());
         log.info("Parameter \"available\" passed as: " + "\"" + is_available + "\"");
         log.info("Available jobs returned with size of \"" + allAvailableJobPosts.size() + "\".");
         log.info("Non available jobs returned with size of \"" + allNonAvailableJobPosts.size() + "\".");
