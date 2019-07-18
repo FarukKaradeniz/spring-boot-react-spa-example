@@ -2,14 +2,61 @@ import React from "react";
 
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
+import Axios from "axios";
 
 import "./Profil.css";
 import {Image} from "react-bootstrap";
 
+const baseUrl = "http://localhost:8080";
+const pathUrl = "/api/candidate/";
+
 export default class Profil extends React.Component {
   state = {
-    url: "https://avatars1.githubusercontent.com/u/22941245?v=4"
+    userId: "",
+    fullname: "",
+    email: "",
+    profileImg: "",
+    skills: "",
+    inBlackList: false,
   };
+
+  componentDidMount = () => {
+    const candidate_id = "f9f60e84-14c3-457f-a8ba-5e57f4afcee1";
+    this.setState({userId: candidate_id});
+    //TODO buraya id props olarak gelecek.
+    this.getProfil(candidate_id);
+    //TODO kişi HR'da blacklist butonu görünecek, blacklistte olduğunu belirten yazı olabilir
+    // butona basılırsa kişi blackliste alınacak
+
+
+  };
+
+  getProfil = (id) => {
+    let jobPostRequest = {
+      url: `${baseUrl}${pathUrl}${id}`,
+      method: 'get',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      }
+    };
+
+    Axios(jobPostRequest).then(
+      response => {
+        console.log(response);
+        this.setState(
+          {
+            userId: response.data.userId,
+            fullname: response.data.fullname,
+            email: response.data.email,
+            profileImg: response.data.profileImg,
+            skills: response.data.skills,
+            inBlackList: response.data.inBlackList
+          }
+        );
+      }
+    );
+  };
+
 
   render() {
     return (
@@ -23,15 +70,19 @@ export default class Profil extends React.Component {
             }}
           >
             <Image
-              src={this.state.url}
+              src={this.state.profileImg}
               thumbnail
               style={{ width: "140px", height: "140px" }}
             />
 
             <Card.Body>
               <div className="profil-name">
-                <h2>Ömer Faruk Karadeniz</h2>
-                <h6 className="text-muted">krdnzomer@gmail.com</h6>
+                <h2>{this.state.fullname}</h2>
+                <h6 className="text-muted">
+                  <a href={"mailto:" + this.state.email}>
+                    {this.state.email}
+                  </a>
+                </h6>
               </div>
             </Card.Body>
           </Card>
@@ -43,51 +94,17 @@ export default class Profil extends React.Component {
               width: "60%"
             }}
           >
-            <Card.Header as="h3">Detaylar</Card.Header>
+            <Card.Header as="h3">Details</Card.Header>
             <Card.Body>
-              <Card.Title>Special title treatment</Card.Title>
+              <Card.Title>Skills</Card.Title>
               <Card.Text className="detay-text">
-                With supporting text below as a natural lead-in to additional
-                content.With supporting text below as a natural lead-in to
-                additional content.With supporting text below as a natural
-                lead-in to additional content.With supporting text below as a
-                natural lead-in to additional content.
+                {this.state.skills}
               </Card.Text>
-              <hr />
-              <Card.Title>Special title treatment</Card.Title>
-              <Card.Text className="detay-text">
-                With supporting text below as a natural lead-in to additional
-                content.
-              </Card.Text>
+
             </Card.Body>
           </Card>
         </Row>
-        <Row className="profil-wrapper">
-          <Card
-            style={{
-              marginTop: "30px",
-              width: "60%"
-            }}
-          >
-            <Card.Header as="h3">Detaylar</Card.Header>
-            <Card.Body>
-              <Card.Title>Special title treatment</Card.Title>
-              <Card.Text className="detay-text">
-                With supporting text below as a natural lead-in to additional
-                content.With supporting text below as a natural lead-in to
-                additional content.With supporting text below as a natural
-                lead-in to additional content.With supporting text below as a
-                natural lead-in to additional content.
-              </Card.Text>
-              <hr />
-              <Card.Title>Special title treatment</Card.Title>
-              <Card.Text className="detay-text">
-                With supporting text below as a natural lead-in to additional
-                content.
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Row>
+        {/** Basvurularım burada görünebilir ?? */}
       </div>
     );
   }
