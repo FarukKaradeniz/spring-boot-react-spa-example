@@ -10,4 +10,5 @@ public class JobPostApplication {
     private String fullname;
     private String candidate_id;
     private String email;
+    private String status;
 }

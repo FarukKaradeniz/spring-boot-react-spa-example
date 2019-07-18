@@ -87,7 +87,7 @@ public class JobPostService {
         allByJobPost_jobPostId.forEach(jobApplication -> {
             Candidate candidate = candidateRepository.findById(jobApplication.candidateId()).get();
             resultList.add(new JobPostApplication(jobApplication.getApplicationId(),
-                    candidate.getFullname(), candidate.getUserId(), candidate.getEmail()));
+                    candidate.getFullname(), candidate.getUserId(), candidate.getEmail(), jobApplication.getStatus()));
         });
         return resultList;
     }

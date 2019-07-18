@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -97,7 +98,7 @@ public class JobPostController {
     public List<JobPostApplication> jobPostApplicants(
             @PathVariable("id") String job_post_id
     ) {
-        return jobPostService.getJobPostApplicants(job_post_id);
+        return jobPostService.getJobPostApplicants(job_post_id).stream().filter(j -> j.getStatus().equals("Değerlendirilmemiş")).collect(Collectors.toList());
     }
 
 }

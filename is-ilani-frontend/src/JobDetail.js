@@ -85,7 +85,7 @@ export default class JobDetail extends React.Component {
             // alttaki gibi bişey olacak
           }
           
-          <Link to={`/applicants/${this.state.postId}`}>
+          <Link to={`/applicants/${this.state.postId}/${this.state.title}`}>
           <Button variant="primary">Apply</Button>
           </Link>
         </div>

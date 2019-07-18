@@ -1,41 +1,79 @@
 import React from "react";
 import {Alert, Button, ListGroup} from "react-bootstrap";
+import Axios from "axios";
+
+const baseUrl = "http://localhost:8080";
+const pathUrl = "/api/jobpost/";
 
 export default class BasvuranListe extends React.Component {
-  met = () => {
-    let mylist = [
-      { name: "One", value: 1 },
-      { name: "Two", value: 2 },
-      { name: "Three", value: 3 },
-      { name: "Four", value: 4 },
-      { name: "Five", value: 5 },
-      { name: "Six", value: 6 }
-    ];
-    /**
-     *           <Link to={`/profil/${index}`}>
-     <Button style={{ float: "right" }} variant="outline-primary">
-     Primary
-     </Button>
-     </Link>
-     */
+  
+  state = {
+    listOfApplicants: [],
+    postId: this.props.match.params.postId,
+    title: "",
+    clickedList: [],
+  };
 
-      //butona tıkladığında disable yapabilirsind
-    let itemList = mylist.map((value, index) => {
+  
+  componentDidMount = () => {
+    const postId = this.props.match.params.postId;
+    const title = this.props.location.pathname.split("/")[3];
+    if(title !== undefined){
+      this.setState({title: title});
+    }
+    this.getJobPostDetail(postId);
+  };
+
+  getJobPostDetail = (postId) => {
+    let jobPostRequest = {
+      url: `${baseUrl}${pathUrl}${postId}/applications`,
+      method: 'get',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      }
+    };
+
+    Axios(jobPostRequest).then(
+      response => {
+        console.log(response);
+        this.setState(
+          {
+            listOfApplicants: response.data
+          }
+        );
+      }
+    );
+
+  };
+
+  populateUIList = () => {
+    return this.state.listOfApplicants
+      .map((data, index) => {
         return (
           <ListGroup.Item key={index}>
-            <h2 style={{ float: "left" }}>{value.name}</h2>
-            <div style={{ float: "right", width: "30%" }}>
+            <h2 style={{float: "left"}}>{data.fullname}</h2>
+            <div style={{float: "right", width: "30%"}}>
               <Button
-                onClick={() => console.log("Clicked olumlu", value)}
-                style={{ float: "left" }}
-                variant="outline-success"
+                onClick={() => this.buttonClickedFor(data, "KABUL")}
+                style={{float: "left"}}
+                variant={this.ifContainsElement(this.state.clickedList, {
+                  application_id: data.application_id
+                }) && (this.state.clickedList.find(e => data.application_id === e.application_id).status === 'KABUL') ? "success" : "outline-success"}
+                disabled={this.ifContainsElement(this.state.clickedList, {
+                  application_id: data.application_id,
+                })}
               >
                 Olumlu
               </Button>
               <Button
-                onClick={() => console.log("Clicked olumsuz", value)}
-                style={{ float: "right" }}
-                variant="outline-danger"
+                onClick={() => this.buttonClickedFor(data, "RED")}
+                style={{float: "right"}}
+                variant={this.ifContainsElement(this.state.clickedList, {
+                  application_id: data.application_id
+                }) && (this.state.clickedList.find(e => data.application_id === e.application_id).status === 'RED') ? "danger" : "outline-danger"}
+                disabled={this.ifContainsElement(this.state.clickedList, {
+                  application_id: data.application_id,
+                })}
               >
                 Olumsuz
               </Button>
@@ -43,10 +81,48 @@ export default class BasvuranListe extends React.Component {
           </ListGroup.Item>
         );
       });
-
-    return itemList;
   };
 
+  buttonClickedFor = (data, status) => {
+    // şimdilik eğer tıklama yapıldıysa direk olarak istek atılacak.
+    let clickedData = {
+      application_id: data.application_id,
+      status: status,
+    };
+    let clickedList = this.state.clickedList;
+    if (this.ifContainsElement(clickedList, clickedData) === false) {
+      clickedList.push(clickedData);
+    }
+    this.setState({clickedList: clickedList});
+    this.postEvaluationOfApplication(data, status);
+  };
+
+  ifContainsElement = (list, element) => list.some(e => e.application_id === element.application_id /** && e.status === element.status */);
+
+  postEvaluationOfApplication = (data, status) => {
+    let jobPostRequest = {
+      url: `${baseUrl}/api/jobapplication`,
+      method: 'put',
+      params: {
+        application_id: data.application_id,
+        status: status
+      },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      }
+    };
+
+    Axios(jobPostRequest).then(
+      response => {
+        console.log(response);
+        // TODO Set state yapılacak?? Gerek yok.
+      }
+    );
+
+
+  };
+
+  
   render() {
     return (
       <div
@@ -58,10 +134,13 @@ export default class BasvuranListe extends React.Component {
         }}
       >
         <Alert variant="info">
-          <h2>Java Developer</h2>
+          <h2>{this.state.title !== "" ? this.state.title : "Job Post Applicants"}</h2>
         </Alert>
 
-        <ListGroup style={{ width: "50%" }}>{this.met()}</ListGroup>
+      {this.state.listOfApplicants.length !== 0 ? 
+        <ListGroup style={{ width: "50%" }}>{this.populateUIList()}</ListGroup> : 
+        <h1>No Applicants to this job post.</h1> /** TODO BURAYI Method icerisinde güzelleştir */}
+
       </div>
     );
   }
