@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
@@ -21,41 +21,47 @@ export default class Header extends React.Component {
               Home
             </Link>
           </Nav.Item>
-          <Nav.Item>
-            <Link className="nav-link" to="/createjobpost">
-              Oluştur
-            </Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Link className={classNames("nav-link", {"hidden-class": this.props.authenticated})} to="/login">
-              Login
-            </Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Link className="nav-link" to="/profil">
-              Profil
-            </Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Link className="nav-link" to="/jobdetail">
-              Job Detail
-            </Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Link className="nav-link" to="/basvuranlar">
-              Basvuranlar
-            </Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Link className="nav-link" to="/basvurularim">
-              BAŞVUrULARIM
-            </Link>
-          </Nav.Item>
-          <Nav.Item hidden>
-            <Link className="nav-link" to="/profil">
-              Profil
-            </Link>
-          </Nav.Item>
+          { // If noone is logged in
+            this.props.authenticated===false && this.props.role==="" ?
+            <Nav.Item>
+              <Link className={classNames("nav-link", {"hidden-class": this.props.authenticated})} to="/login">
+                Login
+              </Link>
+            </Nav.Item>
+          :
+          ""}
+
+          { // If ADMIN is logged in
+            this.props.authenticated===true && this.props.role==="ADMIN" ?
+              <Nav.Item>
+                <Link className="nav-link" to="/createjobpost">
+                  Oluştur
+                </Link>
+              </Nav.Item>
+              :
+              ""
+          }
+
+          { // If CANDIDATE is logged in
+            this.props.authenticated===true && this.props.role==="USER" ?
+              <Fragment>
+                <Nav.Item>
+                  <Link className="nav-link" to="/profil">
+                    Profile
+                  </Link>
+                </Nav.Item>
+
+                <Nav.Item>
+                  <Link className="nav-link" to="/basvurularim">
+                    My Applications
+                  </Link>
+                </Nav.Item>
+              </Fragment>
+              :
+              ""
+          }
+
+
         </Nav>
       </Navbar>
     );
