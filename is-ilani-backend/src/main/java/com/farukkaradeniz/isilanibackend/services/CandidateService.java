@@ -1,6 +1,7 @@
 package com.farukkaradeniz.isilanibackend.services;
 
 import com.farukkaradeniz.isilanibackend.models.Candidate;
+import com.farukkaradeniz.isilanibackend.models.EmailPasswordModel;
 import com.farukkaradeniz.isilanibackend.models.JobApplication;
 import com.farukkaradeniz.isilanibackend.repositories.CandidateRepository;
 import com.farukkaradeniz.isilanibackend.repositories.JobApplicationRepository;
@@ -35,6 +36,18 @@ public class CandidateService {
             return candidateRepository.findById(id).get();
         }
         return null;
+    }
+
+    public boolean isCandidateExist(String email) {
+        return candidateRepository.existsByEmail(email);
+    }
+
+    public boolean candidateLogin(EmailPasswordModel model) {
+        return candidateRepository.existsByEmailAndPassword(model.getEmail(), model.getPassword());
+    }
+
+    public Candidate findCandidateByEmailAndPassword(EmailPasswordModel model) {
+        return candidateRepository.findByEmailEqualsAndPasswordEquals(model.getEmail(), model.getPassword());
     }
 
     public Candidate addCandidate(Candidate candidate) {

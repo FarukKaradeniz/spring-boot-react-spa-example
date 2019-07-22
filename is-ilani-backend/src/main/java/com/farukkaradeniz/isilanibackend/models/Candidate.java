@@ -28,6 +28,9 @@ public class Candidate {
     @Column(name = "in_blacklist")
     private Boolean inBlacklist;
 
+    @Column(name = "password")
+    private String password;
+
     @OneToMany(mappedBy = "candidate")
     @JsonIgnore
     @ToString.Exclude
