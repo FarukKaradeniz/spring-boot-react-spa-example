@@ -29,6 +29,7 @@ public class Candidate {
     private Boolean inBlacklist;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @OneToMany(mappedBy = "candidate")

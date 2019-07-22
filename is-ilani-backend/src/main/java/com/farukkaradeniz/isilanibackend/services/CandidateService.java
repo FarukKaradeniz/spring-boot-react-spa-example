@@ -50,6 +50,10 @@ public class CandidateService {
         return candidateRepository.findByEmailEqualsAndPasswordEquals(model.getEmail(), model.getPassword());
     }
 
+    public Candidate saveCandidate(Candidate candidate) {
+        return candidateRepository.save(candidate);
+    }
+
     public Candidate addCandidate(Candidate candidate) {
         candidate.setUserId(UUID.randomUUID().toString());
         candidate.setApplications(Collections.emptyList());
