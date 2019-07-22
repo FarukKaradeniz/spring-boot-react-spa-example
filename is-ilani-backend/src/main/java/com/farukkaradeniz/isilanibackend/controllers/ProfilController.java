@@ -38,6 +38,7 @@ public class ProfilController {
     ) {
         Candidate candidateById = candidateService.getCandidateById(candidate.getUserId());
         candidateById.setSkills(candidate.getSkills());
+        candidateById.setProfileImg(candidate.getProfileImg());
         Candidate savedCandidate = candidateService.saveCandidate(candidateById);
         return new ResponseEntity<>(savedCandidate, HttpStatus.OK);
     }
