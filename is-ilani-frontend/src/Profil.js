@@ -6,6 +6,10 @@ import Axios from "axios";
 
 import "./Profil.css";
 import {Image} from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import UpdateSkillDialog from "./UpdateSkillDialog";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 const baseUrl = "http://localhost:8080";
 const pathUrl = "/api/candidate/";
@@ -16,19 +20,15 @@ export default class Profil extends React.Component {
     fullname: "",
     email: "",
     profileImg: "",
+    inBlacklist: false,
     skills: "",
-    inBlackList: false,
+    updateSkill: false,
   };
 
   componentDidMount = () => {
-    const candidate_id = "f9f60e84-14c3-457f-a8ba-5e57f4afcee1";
+    const candidate_id = this.props.id;
     this.setState({userId: candidate_id});
-    //TODO buraya id props olarak gelecek.
     this.getProfil(candidate_id);
-    //TODO kişi HR'da blacklist butonu görünecek, blacklistte olduğunu belirten yazı olabilir
-    // butona basılırsa kişi blackliste alınacak
-
-
   };
 
   getProfil = (id) => {
@@ -37,6 +37,7 @@ export default class Profil extends React.Component {
       method: 'get',
       headers: {
         'Access-Control-Allow-Origin': '*',
+        //todo buraya authorization gelecek
       }
     };
 
@@ -50,7 +51,7 @@ export default class Profil extends React.Component {
             email: response.data.email,
             profileImg: response.data.profileImg,
             skills: response.data.skills,
-            inBlackList: response.data.inBlackList
+            inBlacklist: response.data.inBlacklist,
           }
         );
       }
@@ -58,9 +59,66 @@ export default class Profil extends React.Component {
   };
 
 
+  onBlacklisted = () => {
+    let jobPostRequest = {
+      url: `${baseUrl}${pathUrl}${this.props.id}`,
+      method: 'put',
+      params: {
+        id: this.props.id
+      },
+      data: {
+        inBlacklist: !this.state.inBlacklist
+      },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        //todo buralara authorization header'ı eklenecek
+      }
+    };
+
+    Axios(jobPostRequest).then(
+      response => {
+        console.log(response);
+        this.setState(
+          {
+            userId: response.data.userId,
+            fullname: response.data.fullname,
+            email: response.data.email,
+            profileImg: response.data.profileImg,
+            skills: response.data.skills,
+            inBlacklist: response.data.inBlacklist
+          }
+        );
+      }
+    );
+  };
+
+  onUpdateSkill = () => {
+    this.setState((old)=> {
+      return {updateSkill: !old.updateSkill}
+    });
+  };
+
+  onSkillAndProfileImgUpdate(profileImg, skills) {
+    this.setState({
+        profileImg: profileImg,
+        skills: skills
+    });
+  };
+
+
   render() {
     return (
       <div>
+        { // If user is logged in show him update profile dialog
+          this.state.updateSkill && this.props.role==="USER"?
+          <UpdateSkillDialog
+            id={this.state.userId}
+            skills={this.state.skills}
+            profileImg={this.state.profileImg}
+            updated={(profileImg, skills) => this.onSkillAndProfileImgUpdate(profileImg, skills)} />
+          : ""}
+
         <Row className="profil-wrapper">
           <Card
             className="card-row"
@@ -87,6 +145,18 @@ export default class Profil extends React.Component {
             </Card.Body>
           </Card>
         </Row>
+        { // If Admin is logged in show blacklist button
+          this.props.role==="ADMIN" ?
+            <Button
+              onClick={this.onBlacklisted}
+              variant={this.state.inBlacklist ? "outline-secondary" : "secondary"}
+              style={{marginTop: "20px"}}>
+              {this.state.inBlacklist ? "Remove from blacklist" : "Add to blacklist"}
+            </Button>
+            :
+            ""
+        }
+
         <Row className="profil-wrapper">
           <Card
             style={{
@@ -96,7 +166,20 @@ export default class Profil extends React.Component {
           >
             <Card.Header as="h3">Details</Card.Header>
             <Card.Body>
-              <Card.Title>Skills</Card.Title>
+              <Card.Title>
+                <div onClick={this.onUpdateSkill}>
+                  <OverlayTrigger
+                    overlay={
+                      <Tooltip>
+                        Click to update Skill and Profile Image
+                      </Tooltip>
+                    }
+                  >
+                    <p>Skills</p>
+                  </OverlayTrigger>
+
+                </div>
+              </Card.Title>
               <Card.Text className="detay-text">
                 {this.state.skills}
               </Card.Text>
@@ -104,7 +187,6 @@ export default class Profil extends React.Component {
             </Card.Body>
           </Card>
         </Row>
-        {/** Basvurularım burada görünebilir ?? */}
       </div>
     );
   }

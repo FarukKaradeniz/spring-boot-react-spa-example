@@ -54,11 +54,16 @@ public class CandidateController {
         return candidateService.blacklistCandidate(id, candidate);
     }
 
-
-
-
-
-    //TODO myprofile sayfası authorizedclient falan alacak parametre olarak   ve profilecontroller sınıfında olacak
-
+    @PutMapping("/candidate")
+    public Candidate updateSkillsAndImage(
+            @RequestParam("id") String id,
+            @RequestBody Candidate candidate
+    ) {
+        Candidate candidateById = candidateService.getCandidateById(id);
+        candidateById.setProfileImg(candidate.getProfileImg());
+        candidateById.setSkills(candidate.getSkills());
+        candidateService.saveCandidate(candidateById);
+        return candidateById;
+    }
 
 }
