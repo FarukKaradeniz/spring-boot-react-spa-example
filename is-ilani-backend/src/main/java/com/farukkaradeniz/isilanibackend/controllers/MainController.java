@@ -1,5 +1,6 @@
 package com.farukkaradeniz.isilanibackend.controllers;
 
+import com.farukkaradeniz.isilanibackend.models.Candidate;
 import com.farukkaradeniz.isilanibackend.models.EmailPasswordModel;
 import com.farukkaradeniz.isilanibackend.services.CandidateService;
 import com.farukkaradeniz.isilanibackend.utils.BasicUtil;
@@ -14,12 +15,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
+import java.util.Collections;
 
 @RestController
 public class MainController {
@@ -38,21 +36,22 @@ public class MainController {
 
     @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> signup(
-            @RequestBody EmailPasswordModel model
+            @RequestBody EmailPasswordModel model,
+            @RequestParam("fullname") String fullname
             ) {
         boolean ifExist = candidateService.isCandidateExist(model.getEmail());
         if (ifExist) {
             return new ResponseEntity<>("This email is already in use", HttpStatus.CONFLICT);
         }
 
-        String willBeEncoded = new StringBuilder()
-                .append(model.getEmail())
-                .append(':')
-                .append(model.getPassword())
-                .toString();
-        String encoded = Base64.getEncoder().encodeToString(willBeEncoded.getBytes());
+        Candidate candidate = new Candidate(fullname,
+                model.getEmail(), "", "",
+                false, Collections.emptyList());
+        candidate.setPassword(model.getPassword());
 
-        return new ResponseEntity<>(encoded, HttpStatus.CREATED);
+        candidateService.addCandidate(candidate);
+
+        return new ResponseEntity<>("Success", HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/login")
