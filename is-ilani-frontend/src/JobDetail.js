@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 
 import Card from "react-bootstrap/Card";
 import Alert from "react-bootstrap/Alert";
@@ -9,6 +9,7 @@ import moment from "moment";
 import {Link} from "react-router-dom";
 
 import "./JobDetail.css";
+import InfoMessage from "./InfoMessage";
 
 const baseUrl = "http://localhost:8080";
 const pathUrl = "/api/jobpost/";
@@ -18,7 +19,6 @@ export default class JobDetail extends React.Component {
   state = {
     postId: this.props.match.params.postId,
     title: "",
-    user: false, // user mı admin mi olacak kısım
     deadline: "",
     description: "",
     requirements: "",
@@ -28,10 +28,7 @@ export default class JobDetail extends React.Component {
 
   componentDidMount = () => {
     const postId = this.props.match.params.postId;
-    
     this.getJobPostDetail(postId); // getting job post detail
-
-
   };
 
 
@@ -68,6 +65,74 @@ export default class JobDetail extends React.Component {
     );
 
   };
+
+  onActivePassiveClicked = () => {
+    this.setState((old) => {
+      return {isAvailable: !old.isAvailable}
+    }, this.makePutRequest);
+
+  };
+
+  makePutRequest = () => {
+    let jobPostRequest = {
+      url: `${baseUrl}${pathUrl}${this.state.postId}`,
+      method: 'put',
+      data: {
+        title: this.state.title,
+        description: this.state.description,
+        requirements: this.state.requirements,
+        isAvailable: this.state.isAvailable,
+        deadline: this.state.deadline
+      },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      }
+    };
+
+    Axios(jobPostRequest).then(
+      response => {
+        console.log(response);
+        this.setState(
+          {
+            title: response.data.title,
+            description: response.data.description,
+            requirements: response.data.requirements,
+            isAvailable: response.data.isAvailable,
+            deadline: response.data.deadline
+          }
+        );
+      }
+    );
+  };
+
+
+  applyJob = () => {
+    this.setState({applied: true});
+    let jobPostRequest = {
+      url: `${baseUrl}/api/jobapplication/add`,
+      method: 'post',
+      params: {
+        candidate_id: this.props.id,
+        jobpost_id: this.state.postId
+      },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      }
+    };
+
+    Axios(jobPostRequest).then(
+      response => {
+        console.log(response);
+        this.setState({
+          applied: true,
+        })
+      }
+    );
+  };
+
+
   
   render() {
     return (
@@ -76,18 +141,34 @@ export default class JobDetail extends React.Component {
           <h1>
             {this.state.title}
           </h1>
-          {
-            // Eğer giren kullanıcı HR ise başvuranları göster desin, USER ise başvur desin
-            // bu kısımları methodlardan dönecek hale getir 'function component' misali
-            // if (this.state.user === false) {
-            //   <Link to={`/applicants/${this.state.postId}`}></Link>
-            // }
-            // alttaki gibi bişey olacak
+          {this.state.applied===true ? <InfoMessage/> : ""}
+
+          { // If CANDIDATE is logged in
+            this.props.authenticated===true && this.props.role==="USER" ?
+              <Button onClick={this.applyJob}
+                      variant={this.state.isAvailable ? "success" : "outline-secondary"} disabled={!this.state.isAvailable}>
+                {this.state.isAvailable ? "Apply" : "This Job Post is not available"}
+              </Button>
+              :
+              ""
           }
-          
-          <Link to={`/applicants/${this.state.postId}/${this.state.title}`}>
-          <Button variant="primary">Apply</Button>
-          </Link>
+
+          { // If ADMIN is logged in
+            this.props.authenticated===true && this.props.role==="ADMIN" ?
+              <Fragment>
+                <Link to={`/applicants/${this.state.postId}/${this.state.title}`}>
+                  <Button variant="primary">Applicants</Button>
+                </Link>
+                <Button onClick={this.onActivePassiveClicked} variant={this.state.isAvailable ? "success" : "danger"}>
+                  {this.state.isAvailable ? "Active" : "Passive"}
+                </Button>
+              </Fragment>
+              :
+              ""
+          }
+
+
+
         </div>
         <Card style={{ width: "60%", marginBottom: "20px" }}>
           <Alert variant="primary">
