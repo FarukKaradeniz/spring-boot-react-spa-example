@@ -15,9 +15,8 @@ export default class Basvurularim extends React.Component {
   };
   
   componentDidMount = () => {
-    const candidate_id = "f9f60e84-14c3-457f-a8ba-5e57f4afcee1";
+    const candidate_id = this.props.id;
     this.setState({id: candidate_id});
-    //TODO buraya id props olarak gelecek.
     this.getBasvurularim(candidate_id);
   };
 
@@ -59,6 +58,7 @@ export default class Basvurularim extends React.Component {
       method: 'get',
       headers: {
         'Access-Control-Allow-Origin': '*',
+        //todo buraya authorization header gelecek
       }
     };
 
@@ -86,7 +86,7 @@ export default class Basvurularim extends React.Component {
         }}
       >
         <h2 style={{ marginBottom: "10px", fontWeight: "bolder" }}>
-          Başvurularım
+          My Applications
         </h2>
         <ListGroup style={{ width: "60%", margin: "auto" }}>
           {this.populateUIList().length === 0 ? "You don't have any job applications" : this.populateUIList()}
