@@ -13,6 +13,7 @@ import Basvurularim from "./Basvurularim";
 import PrivateRoute from "./PrivateRoute";
 import CreateJobPost from "./CreateJobPost";
 import SignUp from "./SignUp";
+import Logout from "./Logout";
 
 
 class App extends React.Component {
@@ -37,6 +38,15 @@ class App extends React.Component {
     }
   };
 
+  logout = () => {
+    this.setState({
+      authenticated: false,
+      token: "",
+      role: "",
+      id: "",
+    })
+  };
+
   render() {
 
 
@@ -46,6 +56,7 @@ class App extends React.Component {
           <Header
             role={this.state.role}
             authenticated={this.state.authenticated}
+            logout={this.logout}
           />
           <Container fluid>
             <Route path="/" exact component={HomePage}/>
@@ -68,6 +79,9 @@ class App extends React.Component {
                           authenticated={true}
                           component={() => <CreateJobPost {...this.state} />} />
             <Route path="/signup" component={SignUp}/>
+            <Route path="/logout"
+                   render={() => <Logout
+                     logout={this.logout}/>}/>
           </Container>
         </div>
       </BrowserRouter>

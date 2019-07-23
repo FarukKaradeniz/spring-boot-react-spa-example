@@ -60,7 +60,16 @@ export default class Header extends React.Component {
               :
               ""
           }
-
+          {
+            this.props.authenticated ?
+              <Nav.Item>
+                <Link className="nav-link" to="/logout">
+                  Logout
+                </Link>
+              </Nav.Item>
+              :
+              ""
+          }
 
         </Nav>
       </Navbar>
