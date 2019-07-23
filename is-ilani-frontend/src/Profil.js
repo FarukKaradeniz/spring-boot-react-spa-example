@@ -18,7 +18,7 @@ const pathUrl = "/api/candidate/";
 export default class Profil extends React.Component {
   state = {
     userId: "",
-    fullname: "",
+    fullname: "TEST",
     email: "",
     profileImg: "",
     inBlacklist: false,
@@ -141,8 +141,11 @@ export default class Profil extends React.Component {
 
             <Card.Body>
               <div className="profil-name">
-                <h2>{this.state.fullname}</h2>
-                <h6 className="text-muted">
+                <h2 style={{
+                  fontFamily: "Noto Sans, sans-serif",
+                  fontWeight: "600"
+                }}>{this.state.fullname}</h2>
+                <h6>
                   <a href={"mailto:" + this.state.email}>
                     {this.state.email}
                   </a>

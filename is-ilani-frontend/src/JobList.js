@@ -4,6 +4,7 @@ import {ListGroup} from "react-bootstrap";
 import JobListItem from "./JobListItem";
 import Axios from "axios";
 import {Link} from "react-router-dom";
+import "./JobList.css";
 
 const baseUrl = "http://localhost:8080";
 const pathUrl = "/api/jobpost";
@@ -61,7 +62,7 @@ export default class JobList extends React.Component {
 
   render() {
     return (
-      <ListGroup>
+      <ListGroup className={"joblist-group"}>
         {this.populateUI()}
       </ListGroup>
     );

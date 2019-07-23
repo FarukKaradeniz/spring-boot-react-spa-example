@@ -74,7 +74,7 @@ export default class CreateJobPost extends React.Component {
         }}
       >
         <div style={{ width: "50%" }}>
-          <h2 style={{ fontWeight: "bold" }}>Create Job Post</h2>
+          <h2 style={{ fontWeight: "bold", fontFamily: "Noto Sans, sans-serif" }}>Create Job Post</h2>
           <br />
           <form onSubmit={this.onFormSubmit}>
             <Form.Group controlId="title">
@@ -120,7 +120,7 @@ export default class CreateJobPost extends React.Component {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" style={{fontFamily: "Noto Sans, sans-serif"}}>
               Create
             </Button>
           </form>

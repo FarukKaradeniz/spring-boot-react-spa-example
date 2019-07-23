@@ -84,7 +84,7 @@ export default class Basvurularim extends React.Component {
           marginTop: "20px"
         }}
       >
-        <h2 style={{ marginBottom: "10px", fontWeight: "bolder" }}>
+        <h2 style={{ marginBottom: "10px", fontWeight: "bolder", fontFamily: "Noto sans, sans-serif" }}>
           My Applications
         </h2>
         <ListGroup style={{ width: "60%", margin: "auto" }}>

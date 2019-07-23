@@ -8,7 +8,12 @@ export default class JobListItem extends React.Component {
   render() {
     return (
       <Card>
-        <Alert variant="primary">
+        <Alert variant="primary"
+               style={{
+                 fontFamily: "Noto Sans, sans-serif",
+                 fontSize: "1.4em"
+               }}
+        >
           <b>{this.props.title}</b>
         </Alert>
         <Card.Body>

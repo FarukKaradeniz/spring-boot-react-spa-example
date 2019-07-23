@@ -147,7 +147,10 @@ export default class JobDetail extends React.Component {
     return (
       <div className="jobdetail-wrapper">
         <div className="jobdetail-header" style={{ width: "60%" }}>
-          <h1>
+          <h1 style={{
+            fontFamily: "Open Sans, sans-serif",
+            fontWeight: "600"
+          }}>
             {this.state.title}
           </h1>
           {this.state.applied===true ? <InfoMessage message={this.state.message} messageTitle={this.state.messageTitle}/> : ""}
@@ -184,8 +187,8 @@ export default class JobDetail extends React.Component {
 
 
         </div>
-        <Card style={{ width: "60%", marginBottom: "20px" }}>
-          <Alert variant="primary">
+        <Card style={{ width: "60%", marginBottom: "20px", fontFamily: "Open Sans, sans-serif", }}>
+          <Alert variant="primary" >
             <b>Details</b>
           </Alert>
           <Card.Body>
