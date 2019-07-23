@@ -26,7 +26,14 @@ export default class Profil extends React.Component {
   };
 
   componentDidMount = () => {
-    const candidate_id = this.props.id;
+    let candidate_id;
+    console.log(window.location.href.split("/")[4]);
+    if (window.location.href.split("/")[4] !== this.props.id && this.props.role==="ADMIN") {
+      candidate_id = window.location.href.split("/")[4];
+    }
+    else {
+      candidate_id = this.props.id;
+    }
     this.setState({userId: candidate_id});
     this.getProfil(candidate_id);
   };
