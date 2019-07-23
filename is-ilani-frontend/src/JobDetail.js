@@ -52,7 +52,6 @@ export default class JobDetail extends React.Component {
 
     Axios(jobPostRequest).then(
       response => {
-        console.log(response);
         this.setState(
           {
             title: response.data.title,
@@ -94,7 +93,6 @@ export default class JobDetail extends React.Component {
 
     Axios(jobPostRequest).then(
       response => {
-        console.log(response);
         this.setState(
           {
             title: response.data.title,
@@ -127,8 +125,6 @@ export default class JobDetail extends React.Component {
 
     Axios(jobPostRequest).then(
       response => {
-        console.log(response);
-
           this.setState({
             applied: true,
             message: "You've successfully applied to this job",

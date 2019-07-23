@@ -64,7 +64,6 @@ export default class Basvurularim extends React.Component {
 
     Axios(jobPostRequest).then(
       response => {
-        console.log(response);
         this.setState(
           {
             applications: response.data

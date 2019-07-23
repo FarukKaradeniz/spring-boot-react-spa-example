@@ -47,7 +47,6 @@ export default class CreateJobPost extends React.Component {
       };
       Axios(jobPostRequest).then(
         response => {
-          console.log(response);
           this.setState({created: true, createdJobPostId: response.data.jobPostId});
         }
       );

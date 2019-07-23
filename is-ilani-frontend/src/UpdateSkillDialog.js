@@ -47,7 +47,6 @@ export default class UpdateSkillDialog extends React.Component{
 
     Axios(jobPostRequest).then(
       response => {
-        console.log(response);
         this.props.updated(response.data.profileImg, response.data.skills);
       }
     );

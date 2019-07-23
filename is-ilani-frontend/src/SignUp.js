@@ -39,7 +39,6 @@ export default class SignUp extends React.Component {
       };
       Axios(jobPostRequest).then(
         response => {
-          console.log(response);
           this.setState({success: "x"});
         }
       );

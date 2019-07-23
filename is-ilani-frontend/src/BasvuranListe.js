@@ -10,7 +10,6 @@ export default class BasvuranListe extends React.Component {
   
   state = {
     listOfApplicants: [],
-    // postId: this.props.postId,
     title: "",
     clickedList: [],
   };
@@ -119,7 +118,7 @@ export default class BasvuranListe extends React.Component {
 
     Axios(jobPostRequest).then(
       response => {
-        console.log(response);
+        this.setState({test: true});
       }
     );
   };

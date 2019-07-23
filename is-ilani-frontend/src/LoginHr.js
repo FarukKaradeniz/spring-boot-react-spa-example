@@ -12,14 +12,8 @@ export default class LoginHr extends React.Component {
     apiUrl: "http://localhost:8080",
   };
 
-  // onFormSubmit = e => {
-  //   e.preventDefault();
-  //   console.log(this.state.username, ":", this.state.password);
-  // };
-
   onFormSubmit= async (e) => {
     e.preventDefault();
-    console.log(this.state.username, this.state.password);
     let config = {
       method: 'post',
       url: `${this.state.apiUrl}/login`,
@@ -33,7 +27,6 @@ export default class LoginHr extends React.Component {
       }
     };
     let response_post = await Axios(config);
-    console.log(response_post.headers);
     this.props.setAuthenticate(response_post.status,
       response_post.headers.authorization,
       response_post.headers.role,

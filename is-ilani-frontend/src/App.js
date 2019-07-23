@@ -17,17 +17,14 @@ import Logout from "./Logout";
 
 
 class App extends React.Component {
-
   state = {
-    token: "", //USER
-    // token: "Basic Ym9iOmJvYnNwYXNzd29yZA==", //ADMIN
+    token: "",
     role: "",
     id: "",
-    authenticated: false, //fix here
+    authenticated: false,
   };
 
   setAuthenticate = (string, tkn, role, id) => {
-    console.log("String got from is " + string, "and token is:" + tkn);
     if (this.state.authenticated===false){
       this.setState({
         authenticated: true,
@@ -48,8 +45,6 @@ class App extends React.Component {
   };
 
   render() {
-
-
     return (
       <BrowserRouter>
         <div className="App">
