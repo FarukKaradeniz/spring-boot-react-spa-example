@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -78,12 +79,14 @@ public class JobPostController {
 
     // ADD JOBPOST
     @PostMapping("/jobpost")
+    @PreAuthorize(value = "hasAnyAuthority('ROLE_ADMIN')")
     public JobPost addJobPost(@RequestBody JobPost jobPost) {
         return jobPostService.addJobPost(jobPost);
     }
 
     // UPDATE JOBPOST
     @PutMapping("/jobpost/{id}")
+    @PreAuthorize(value = "hasAnyAuthority('ROLE_ADMIN')")
     public JobPost setAvailability(
             @PathVariable("id") String id,
             @RequestBody JobPost jobPost
@@ -94,6 +97,7 @@ public class JobPostController {
 
     // Adayın kendi sayfasına başvurduğu başvurularla ilgili küçük detayları göreceği sayfa
     @GetMapping("/jobpost/candidate/{id}")
+    @PreAuthorize(value = "hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public List<CandidateApplication> jobPostsCandidadeApplied(
         @PathVariable("id") String candidate_id
     ){
@@ -102,6 +106,7 @@ public class JobPostController {
 
     // HR'ın bir iş ilanına yapılan başvurularla ilgili küçük detayları göreceği sayfa
     @GetMapping("/jobpost/{id}/applications")
+    @PreAuthorize(value = "hasAnyAuthority('ROLE_ADMIN')")
     public List<JobPostApplication> jobPostApplicants(
             @PathVariable("id") String job_post_id
     ) {

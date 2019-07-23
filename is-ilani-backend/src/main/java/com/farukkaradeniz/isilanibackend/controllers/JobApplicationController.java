@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,6 +25,7 @@ public class JobApplicationController {
 
     // Aday bir JobPost'a başvuru yaptığında çağırılacak olan method
     @PostMapping("/jobapplication/add")
+    @PreAuthorize(value = "hasAnyAuthority('ROLE_USER')")
     public JobApplication createJobApplication(
             @RequestParam("candidate_id") String candidate_id,
             @RequestParam("jobpost_id") String jobpost_id) {
@@ -44,6 +46,7 @@ public class JobApplicationController {
 
     // HR bir adayın başvuru durumunu güncellemek istediğinde çağırılacak method
     @PutMapping("/jobapplication")
+    @PreAuthorize(value = "hasAnyAuthority('ROLE_ADMIN')")
     public JobApplication applicationStatusUpdate(
             @RequestParam("application_id") String application_id,
             @RequestParam("status") String status

@@ -6,6 +6,7 @@ import com.farukkaradeniz.isilanibackend.services.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class ProfilController {
     }
 
     @GetMapping("/myprofil")
+    @PreAuthorize(value = "hasAnyAuthority('ROLE_USER')")
     public ResponseEntity<Candidate> getMyProfil() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getPrincipal().toString();
@@ -33,6 +35,7 @@ public class ProfilController {
     }
 
     @PutMapping("/myprofil")
+    @PreAuthorize(value = "hasAnyAuthority('ROLE_USER')")
     public ResponseEntity<Candidate> updateProfil(
             @RequestBody Candidate candidate
     ) {

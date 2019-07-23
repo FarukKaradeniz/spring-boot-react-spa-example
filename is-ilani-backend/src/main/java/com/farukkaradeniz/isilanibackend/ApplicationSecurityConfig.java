@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,6 +16,7 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JDBCAuthenticationProvider jdbcAuthenticationProvider;
@@ -25,12 +27,23 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/signup").permitAll()
+                // CANDIDATE ENDPOINTS
+//                .antMatchers(HttpMethod.PUT, "/api/candidate").hasAuthority("ROLE_USER")
+//                .antMatchers(HttpMethod.POST, "/api/candidate").permitAll()
+//                .antMatchers(HttpMethod.PUT, "/api/candidate/{(.*)}").hasAuthority("ROLE_ADMIN")
+                // JOBPOST ENDPOINTS
+//                .antMatchers(HttpMethod.GET, "/api/jobpost/all").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/jobpost").permitAll()
+//                .antMatchers(HttpMethod.PUT, "/api/jobpost/{id}").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers(HttpMethod.GET, "/api/jobpost/candidate/{id}").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+//                .antMatchers(HttpMethod.GET, "/api/jobpost/{id}/applications").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers(HttpMethod.POST, "/api/jobpost").hasAuthority("ROLE_ADMIN")
+
                 .antMatchers("/api/**").permitAll()
+                .antMatchers("/signup").permitAll()
                 .antMatchers("/usr").hasAuthority("ROLE_USER")
                 .antMatchers("/admin").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/login").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
