@@ -40,7 +40,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .httpBasic().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
     }
 
     @Override
@@ -63,7 +62,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        //config.setAllowCredentials(true); // you USUALLY want this
+        config.setAllowCredentials(true); // you USUALLY want this
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("OPTIONS");
@@ -73,6 +72,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         config.addAllowedMethod("POST");
         config.addAllowedMethod("DELETE");
         config.addAllowedMethod("PATCH");
+        config.addExposedHeader("Authorization");
+        config.addExposedHeader("Role");
+        config.addExposedHeader("USER_ID");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
