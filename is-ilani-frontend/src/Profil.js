@@ -33,11 +33,11 @@ export default class Profil extends React.Component {
 
   getProfil = (id) => {
     let jobPostRequest = {
-      url: `${baseUrl}${pathUrl}${id}`,
+      url: this.props.role==="ADMIN" ? `${baseUrl}${pathUrl}${id}` : `${baseUrl}/api/myprofil`,
       method: 'get',
       headers: {
         'Access-Control-Allow-Origin': '*',
-        //todo buraya authorization gelecek
+        'Authorization': this.props.token,
       }
     };
 
@@ -113,6 +113,7 @@ export default class Profil extends React.Component {
         { // If user is logged in show him update profile dialog
           this.state.updateSkill && this.props.role==="USER"?
           <UpdateSkillDialog
+            token={this.props.token}
             id={this.state.userId}
             skills={this.state.skills}
             profileImg={this.state.profileImg}
