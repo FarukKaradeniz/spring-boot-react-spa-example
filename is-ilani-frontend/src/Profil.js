@@ -10,6 +10,7 @@ import Button from "react-bootstrap/Button";
 import UpdateSkillDialog from "./UpdateSkillDialog";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import CandidateApplications from "./CandidateApplications";
 
 const baseUrl = "http://localhost:8080";
 const pathUrl = "/api/candidate/";
@@ -27,7 +28,6 @@ export default class Profil extends React.Component {
 
   componentDidMount = () => {
     let candidate_id;
-    console.log(window.location.href.split("/")[4]);
     if (window.location.href.split("/")[4] !== this.props.id && this.props.role==="ADMIN") {
       candidate_id = window.location.href.split("/")[4];
     }
@@ -50,7 +50,6 @@ export default class Profil extends React.Component {
 
     Axios(jobPostRequest).then(
       response => {
-        console.log(response);
         this.setState(
           {
             userId: response.data.userId,
@@ -85,7 +84,6 @@ export default class Profil extends React.Component {
 
     Axios(jobPostRequest).then(
       response => {
-        console.log(response);
         this.setState(
           {
             userId: response.data.userId,
@@ -195,6 +193,18 @@ export default class Profil extends React.Component {
             </Card.Body>
           </Card>
         </Row>
+        {
+          this.props.role==="ADMIN" && this.state.userId!=="" ?
+            <Row className="profile-wrapper">
+              <CandidateApplications
+                token={this.props.token}
+                userId={this.state.userId}
+              />
+            </Row>
+            :
+            ""
+        }
+
       </div>
     );
   }
