@@ -3,6 +3,7 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import {Redirect} from "react-router-dom";
+import Axios from "axios";
 
 export default class LoginHr extends React.Component {
   state = {
@@ -19,22 +20,24 @@ export default class LoginHr extends React.Component {
   onFormSubmit= async (e) => {
     e.preventDefault();
     console.log(this.state.username, this.state.password);
-
-    // let config = {
-    //   method: 'post',
-    //   url: `${this.state.apiUrl}/login`,
-    //   data: {
-    //     username: this.props.username,
-    //     password: this.props.password
-    //   },
-    //   headers: {
-    //     'Access-Control-Allow-Origin': '*',
-    //     'Content-Type': 'application/x-www-form-urlencoded',
-    //   }
-    // };
-    // let response_post = await Axios(config);
-    // console.log(response_post);
-    this.props.setAuthenticate("TEST", `${this.state.username}:${this.state.password}`);
+    let config = {
+      method: 'post',
+      url: `${this.state.apiUrl}/login`,
+      data: {
+        email: this.props.username,
+        password: this.props.password
+      },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Authorization': `Basic ${this.basicCode()}`
+      }
+    };
+    let response_post = await Axios(config);
+    console.log(response_post.headers);
+    this.props.setAuthenticate(response_post.status,
+      response_post.headers.authorization,
+      response_post.headers.role,
+      response_post.headers.user_id);
   };
 
   basicCode = () => {

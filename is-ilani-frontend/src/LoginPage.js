@@ -23,7 +23,6 @@ export default class LoginPage extends React.Component {
         </Row>
         <Row>
           <LoginHr
-            token={this.props.token}
             authenticated={this.props.authenticated}
             setAuthenticate={this.props.setAuthenticate}
           />

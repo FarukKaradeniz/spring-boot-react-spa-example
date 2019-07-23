@@ -18,11 +18,11 @@ import SignUp from "./SignUp";
 class App extends React.Component {
 
   state = {
-    token: "Basic a3JkbnpvbWVyQGdtYWlsLmNvbTphc2Q=", //USER
+    token: "", //USER
     // token: "Basic Ym9iOmJvYnNwYXNzd29yZA==", //ADMIN
-    role: "USER",
-    id: "17c33d81-8630-42b5-beae-bbf703ce0139",
-    authenticated: true, //fix here
+    role: "",
+    id: "",
+    authenticated: false, //fix here
   };
 
   setAuthenticate = (string, tkn, role, id) => {
@@ -51,7 +51,6 @@ class App extends React.Component {
             <Route path="/" exact component={HomePage}/>
             <Route path="/login"
                    render={() => <LoginPage
-                     token={this.state.token}
                      setAuthenticate={this.setAuthenticate}
                      authenticated={this.state.authenticated}/>} />
             <PrivateRoute path="/profil"
