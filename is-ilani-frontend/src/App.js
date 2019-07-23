@@ -18,10 +18,10 @@ import SignUp from "./SignUp";
 class App extends React.Component {
 
   state = {
-    // token: "Basic a3JkbnpvbWVyQGdtYWlsLmNvbTphc2Q=", //USER
-    token: "Basic Ym9iOmJvYnNwYXNzd29yZA==", //ADMIN
-    role: "ADMIN",
-    // id: "f9f60e84-14c3-457f-a8ba-5e57f4afcee1",
+    token: "Basic a3JkbnpvbWVyQGdtYWlsLmNvbTphc2Q=", //USER
+    // token: "Basic Ym9iOmJvYnNwYXNzd29yZA==", //ADMIN
+    role: "USER",
+    id: "17c33d81-8630-42b5-beae-bbf703ce0139",
     authenticated: true, //fix here
   };
 
@@ -65,7 +65,9 @@ class App extends React.Component {
             <PrivateRoute path="/applicants/:postId"
                           authenticated={true}
                           component={() => <BasvuranListe {...this.state} />} />
-            <Route path="/createjobpost" component={CreateJobPost} />
+            <PrivateRoute path="/createjobpost"
+                          authenticated={true}
+                          component={() => <CreateJobPost {...this.state} />} />
             <Route path="/signup" component={SignUp}/>
           </Container>
         </div>

@@ -42,6 +42,7 @@ export default class CreateJobPost extends React.Component {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
+          'Authorization': this.props.token,
         }
       };
       Axios(jobPostRequest).then(

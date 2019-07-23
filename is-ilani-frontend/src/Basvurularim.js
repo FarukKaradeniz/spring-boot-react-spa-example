@@ -58,7 +58,7 @@ export default class Basvurularim extends React.Component {
       method: 'get',
       headers: {
         'Access-Control-Allow-Origin': '*',
-        //todo buraya authorization header gelecek
+        'Authorization': this.props.token,
       }
     };
 

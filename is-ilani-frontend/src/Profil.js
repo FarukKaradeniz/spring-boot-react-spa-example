@@ -79,7 +79,7 @@ export default class Profil extends React.Component {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
-        //todo buralara authorization header'ı eklenecek
+        'Authorization': this.props.token,
       }
     };
 
