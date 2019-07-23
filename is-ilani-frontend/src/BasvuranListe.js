@@ -1,6 +1,7 @@
 import React from "react";
 import {Alert, Button, ListGroup} from "react-bootstrap";
 import Axios from "axios";
+import {Link} from "react-router-dom";
 
 const baseUrl = "http://localhost:8080";
 const pathUrl = "/api/jobpost/";
@@ -9,15 +10,16 @@ export default class BasvuranListe extends React.Component {
   
   state = {
     listOfApplicants: [],
-    postId: this.props.match.params.postId,
+    // postId: this.props.postId,
     title: "",
     clickedList: [],
   };
 
   
   componentDidMount = () => {
-    const postId = this.props.match.params.postId;
-    const title = this.props.location.pathname.split("/")[3];
+    const postId = window.location.href.split("/")[4];
+    console.log(postId);
+    const title = window.location.href.split("/")[5].replace("%20", ' ');
     if(title !== undefined){
       this.setState({title: title});
     }
@@ -30,12 +32,12 @@ export default class BasvuranListe extends React.Component {
       method: 'get',
       headers: {
         'Access-Control-Allow-Origin': '*',
+        'Authorization': this.props.token,
       }
     };
 
     Axios(jobPostRequest).then(
       response => {
-        console.log(response);
         this.setState(
           {
             listOfApplicants: response.data
@@ -51,8 +53,9 @@ export default class BasvuranListe extends React.Component {
       .map((data, index) => {
         return (
           <ListGroup.Item key={index}>
-            {/**H2 tag'i <Link> içerisine alınacak ve kişinin profiline gidecek. */}
-            <h2 style={{float: "left"}}>{data.fullname}</h2>
+            <Link to={`/profil/${data.candidate_id}`}>
+              <h2 style={{float: "left"}}>{data.fullname}</h2>
+            </Link>
             <div style={{float: "right", width: "30%"}}>
               <Button
                 onClick={() => this.buttonClickedFor(data, "KABUL")}
@@ -110,20 +113,17 @@ export default class BasvuranListe extends React.Component {
       },
       headers: {
         'Access-Control-Allow-Origin': '*',
+        'Authorization': this.props.token,
       }
     };
 
     Axios(jobPostRequest).then(
       response => {
         console.log(response);
-        // TODO Set state yapılacak?? Gerek yok.
       }
     );
-
-
   };
 
-  
   render() {
     return (
       <div
