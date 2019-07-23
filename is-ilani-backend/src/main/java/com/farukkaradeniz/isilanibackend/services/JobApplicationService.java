@@ -62,4 +62,11 @@ public class JobApplicationService {
         }
         return null;
     }
+
+    public boolean checkIfCandidateAppliedToJob(String candidate_id, String jobpost_id) {
+        JobApplication application =
+                jobApplicationRepository.findByCandidate_UserIdAndAndJobPost_JobPostId(candidate_id, jobpost_id);
+
+        return application != null;
+    }
 }

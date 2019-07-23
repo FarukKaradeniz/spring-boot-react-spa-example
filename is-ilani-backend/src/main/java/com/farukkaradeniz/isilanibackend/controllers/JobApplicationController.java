@@ -27,6 +27,10 @@ public class JobApplicationController {
     public JobApplication createJobApplication(
             @RequestParam("candidate_id") String candidate_id,
             @RequestParam("jobpost_id") String jobpost_id) {
+        if (jobApplicationService.checkIfCandidateAppliedToJob(candidate_id, jobpost_id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "You've already applied to this job");
+        }
         JobApplication application = jobApplicationService.createJobApplication(candidate_id, jobpost_id);
         if (application == null) {
             log.error("Could not create job application with given candidate_id and jobpost_id.");

@@ -125,11 +125,21 @@ export default class JobDetail extends React.Component {
     Axios(jobPostRequest).then(
       response => {
         console.log(response);
-        this.setState({
-          applied: true,
-        })
+
+          this.setState({
+            applied: true,
+            message: "You've successfully applied to this job",
+            messageTitle: "Congratulations"
+          });
+
       }
-    );
+    ).catch(() => {
+      this.setState({
+        applied: true,
+        message: "You've already applied to this job",
+        messageTitle: "Failure"
+      });
+    });
   };
 
 
@@ -141,13 +151,18 @@ export default class JobDetail extends React.Component {
           <h1>
             {this.state.title}
           </h1>
-          {this.state.applied===true ? <InfoMessage/> : ""}
+          {this.state.applied===true ? <InfoMessage message={this.state.message} messageTitle={this.state.messageTitle}/> : ""}
 
           { // If CANDIDATE is logged in
             this.props.authenticated===true && this.props.role==="USER" ?
               <Button onClick={this.applyJob}
                       variant={this.state.isAvailable ? "success" : "outline-secondary"} disabled={!this.state.isAvailable}>
-                {this.state.isAvailable ? "Apply" : "This Job Post is not available"}
+                {
+                  this.state.isAvailable ?
+                    "Apply"
+                    :
+                  "This Job Post is not available"
+                }
               </Button>
               :
               ""

@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import React, {useState} from "react";
 
-export default function InfoMessage() {
+export default function InfoMessage({messageTitle, message}) {
   const [show, setShow] = useState(true);
 
   const handleClose = () => setShow(false);
@@ -11,9 +11,9 @@ export default function InfoMessage() {
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Congratulations</Modal.Title>
+          <Modal.Title>{messageTitle}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>You've applied to the job successfully</Modal.Body>
+        <Modal.Body>{message}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
