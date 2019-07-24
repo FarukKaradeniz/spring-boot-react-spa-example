@@ -18,10 +18,10 @@ import Logout from "./Logout";
 
 class App extends React.Component {
   state = {
-    token: "",
-    role: "",
-    id: "",
-    authenticated: false,
+    token: localStorage.getItem("token") || "",
+    role: localStorage.getItem("role") || "",
+    id: localStorage.getItem("id") || "",
+    authenticated: JSON.parse(localStorage.getItem("authenticated") || "false") || false,
   };
 
   setAuthenticate = (string, tkn, role, id) => {
@@ -31,8 +31,12 @@ class App extends React.Component {
         token: tkn,
         role: role,
         id: id,
-      })
+      });
     }
+    localStorage.setItem("token", tkn);
+    localStorage.setItem("role", role);
+    localStorage.setItem("id", id);
+    localStorage.setItem("authenticated", "true");
   };
 
   logout = () => {
@@ -41,7 +45,8 @@ class App extends React.Component {
       token: "",
       role: "",
       id: "",
-    })
+    });
+    localStorage.clear(); // local storage remove everything
   };
 
   render() {
