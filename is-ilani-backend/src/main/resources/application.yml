@@ -27,6 +27,18 @@ spring:
             base-dn: dc=farukkaradeniz,dc=com
             port: 8389
 
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: arrow1423523omerfaruk@gmail.com
+        password: e5v56Beg2VGntpF
+        properties.mail.smtp:
+            auth: true
+            starttls.enable: true
+            ssl.trues: smtp.gmail.com
+        protocol: smtp
+
+
 
 #    security:
 #        oauth2:
