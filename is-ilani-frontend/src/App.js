@@ -1,19 +1,19 @@
 import React from "react";
 
-import "./App.css";
-import Header from "./Header";
+import "./styles/App.css";
+import Header from "./components/Header";
 import {Container} from "react-bootstrap";
-import HomePage from "./HomePage";
+import HomePage from "./components/HomePage";
 import {BrowserRouter, Route} from "react-router-dom";
-import LoginPage from "./LoginPage";
-import Profil from "./Profil";
-import JobDetail from "./JobDetail";
-import BasvuranListe from "./BasvuranListe";
-import Basvurularim from "./Basvurularim";
+import LoginPage from "./components/LoginPage";
+import Profil from "./components/Profil";
+import JobDetail from "./components/JobDetail";
+import BasvuranListe from "./components/BasvuranListe";
+import Basvurularim from "./components/Basvurularim";
 import PrivateRoute from "./PrivateRoute";
-import CreateJobPost from "./CreateJobPost";
-import SignUp from "./SignUp";
-import Logout from "./Logout";
+import CreateJobPost from "./components/CreateJobPost";
+import SignUp from "./components/SignUp";
+import Logout from "./components/Logout";
 
 
 class App extends React.Component {

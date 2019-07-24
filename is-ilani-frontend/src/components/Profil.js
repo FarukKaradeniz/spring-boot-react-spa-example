@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Axios from "axios";
 
-import "./Profil.css";
+import "../styles/Profil.css";
 import {Image} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import UpdateSkillDialog from "./UpdateSkillDialog";

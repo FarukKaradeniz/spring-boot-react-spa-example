@@ -1,7 +1,7 @@
 import React from "react";
 import LoginHr from "./LoginHr";
 
-import "./LoginPage.css";
+import "../styles/LoginPage.css";
 import LoginLinkedin from "./LoginLinkedin";
 import Row from "react-bootstrap/Row";
 import {Link} from "react-router-dom";

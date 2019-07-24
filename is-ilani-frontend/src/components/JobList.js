@@ -4,7 +4,7 @@ import {ListGroup} from "react-bootstrap";
 import JobListItem from "./JobListItem";
 import Axios from "axios";
 import {Link} from "react-router-dom";
-import "./JobList.css";
+import "../styles/JobList.css";
 
 const baseUrl = "http://localhost:8080";
 const pathUrl = "/api/jobpost";

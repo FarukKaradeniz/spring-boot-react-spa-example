@@ -12,7 +12,7 @@ export default class Header extends React.Component {
       <Navbar bg="light" variant="light" static="top" style={{justifyContent: 'space-between'}}>
         <Navbar.Brand>
           <Link to="/">
-            <Image src={require("./images/brand-logo.png")} height={30}/>
+            <Image src={require("../images/brand-logo.png")} height={30}/>
           </Link>
         </Navbar.Brand>
         <Nav className="justify-content-end" activeKey="/home">

@@ -8,7 +8,7 @@ import Axios from "axios";
 import moment from "moment";
 import {Link} from "react-router-dom";
 
-import "./JobDetail.css";
+import "../styles/JobDetail.css";
 import InfoMessage from "./InfoMessage";
 
 const baseUrl = "http://localhost:8080";
