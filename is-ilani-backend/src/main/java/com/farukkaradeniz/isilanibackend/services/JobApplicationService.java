@@ -69,4 +69,12 @@ public class JobApplicationService {
 
         return application != null;
     }
+
+    public JobApplication getJobApplicationById(String id) {
+        if (jobApplicationRepository.findById(id).isPresent()) {
+            return jobApplicationRepository.findById(id).get();
+        }
+        return null;
+    }
+
 }

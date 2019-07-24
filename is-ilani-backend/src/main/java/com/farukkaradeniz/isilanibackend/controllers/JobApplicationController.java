@@ -1,7 +1,10 @@
 package com.farukkaradeniz.isilanibackend.controllers;
 
+import com.farukkaradeniz.isilanibackend.models.Candidate;
 import com.farukkaradeniz.isilanibackend.models.JobApplication;
+import com.farukkaradeniz.isilanibackend.services.CandidateService;
 import com.farukkaradeniz.isilanibackend.services.JobApplicationService;
+import com.farukkaradeniz.isilanibackend.services.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +20,14 @@ import java.util.List;
 public class JobApplicationController {
     private Logger log = LoggerFactory.getLogger(JobApplicationController.class);
     private JobApplicationService jobApplicationService;
+    private MailService mailService;
+    private CandidateService candidateService;
 
     @Autowired
-    public JobApplicationController(JobApplicationService jobApplicationService) {
+    public JobApplicationController(JobApplicationService jobApplicationService, MailService mailService, CandidateService candidateService) {
         this.jobApplicationService = jobApplicationService;
+        this.mailService = mailService;
+        this.candidateService = candidateService;
     }
 
     // Aday bir JobPost'a başvuru yaptığında çağırılacak olan method
@@ -51,6 +58,11 @@ public class JobApplicationController {
             @RequestParam("application_id") String application_id,
             @RequestParam("status") String status
     ) {
+        JobApplication currentApplication = jobApplicationService.getJobApplicationById(application_id);
+        String oldStatus = currentApplication.getStatus();
+        Candidate candidate = candidateService.getCandidateById(currentApplication.candidateId());
+        String candidateEmail = candidate.getEmail();
+
         JobApplication application = jobApplicationService.updateJobApplication(application_id, status);
         if (application == null) {
                 log.info("Job application with " + application_id + " does not exist.");
@@ -58,6 +70,10 @@ public class JobApplicationController {
                     "There are no records of Job application by given ID.");
 
         }
+        mailService.sendMail(candidateEmail,
+                String.format("Dear %s,\n Your job application status has changed from \"%s\" to \"%s\".\n" +
+                        "To see the job details please check this link \n%s",
+                        candidate.getFullname(), oldStatus, status, "http://localhost:3000/jobdetail/"+application.jobPostId()));
         return application;
     }
 
